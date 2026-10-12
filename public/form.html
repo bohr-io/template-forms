@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; object-src 'none'; base-uri 'none'; form-action 'self'" />
+    <title data-i18n="form.pageTitle">Formulário</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/base.css" />
+    <link rel="stylesheet" href="/assets/app.css" />
+    <script type="module" src="/assets/form.js"></script>
+  </head>
+  <body>
+    <div class="hero-bg" aria-hidden="true"></div>
+    <main class="form-page">
+      <div class="narrow stack">
+        <section id="loading" class="card" aria-busy="true">
+          <p class="muted" data-i18n="common.loading"></p>
+        </section>
+
+        <!-- Closed or missing form -->
+        <section id="message" class="card stack message" hidden>
+          <div id="message-icon" class="done-icon muted-icon" aria-hidden="true">!</div>
+          <h1 id="message-title"></h1>
+          <p id="message-text" class="muted"></p>
+        </section>
+
+        <form id="form" class="card form-card" novalidate hidden>
+          <header class="form-head">
+            <h1 id="title"></h1>
+            <p id="description" class="lead"></p>
+            <p id="required-note" class="muted small" hidden>
+              <span class="req" aria-hidden="true">*</span> <span data-i18n="form.requiredNote"></span>
+            </p>
+          </header>
+          <div id="questions" class="questions"></div>
+          <label class="honeypot" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off" /></label>
+          <p id="error" class="alert error" role="alert" hidden></p>
+          <button class="btn primary submit" type="submit" data-i18n="form.submit"></button>
+        </form>
+
+        <section id="done" class="card stack message" hidden tabindex="-1">
+          <div class="done-icon" aria-hidden="true">✓</div>
+          <h1 data-i18n="form.doneTitle"></h1>
+          <p class="muted" data-i18n="form.doneText"></p>
+          <button id="again" class="btn" type="button" data-i18n="form.again"></button>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

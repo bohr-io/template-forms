@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "forms",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // The Worker answers these paths first. /f/<slug> is not a file: without this, a browser opening it would
+    // get the 404 page. Listing paths here means the others never reach the Worker, so /api/* must be listed too.
+    "run_worker_first": ["/api/*", "/f/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "forms",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "observability": { "enabled": true }
+}

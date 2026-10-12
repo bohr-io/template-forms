@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; object-src 'none'; base-uri 'none'; form-action 'self'" />
+    <title data-i18n="admin.brand">Formulários</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/base.css" />
+    <link rel="stylesheet" href="/assets/app.css" />
+    <script type="module" src="/assets/admin.js"></script>
+  </head>
+  <body>
+    <main id="setup" class="login" hidden>
+      <div class="card stack">
+        <h1 data-i18n="admin.setupTitle"></h1>
+        <p data-i18n="admin.setupText"></p>
+        <ul class="setup-steps">
+          <li data-i18n="admin.setupBohr"></li>
+          <li data-i18n="admin.setupWrangler"></li>
+          <li data-i18n="admin.setupLocal"></li>
+        </ul>
+      </div>
+    </main>
+
+    <main id="login" class="login" hidden>
+      <form id="login-form" class="card stack">
+        <h1 data-i18n="admin.loginTitle"></h1>
+        <p class="muted" data-i18n="admin.loginText"></p>
+        <input type="text" name="username" value="admin" autocomplete="username" hidden />
+        <label class="field">
+          <span data-i18n="admin.password"></span>
+          <input type="password" name="password" autocomplete="current-password" required maxlength="256" />
+        </label>
+        <p id="login-error" class="alert error" role="alert" hidden></p>
+        <button class="btn primary block" type="submit" data-i18n="admin.login"></button>
+      </form>
+    </main>
+
+    <div id="admin" hidden>
+      <header class="admin-header">
+        <div class="container">
+          <a class="brand" href="#/" data-i18n="admin.brand"></a>
+          <a class="btn ghost small" href="/" target="_blank" rel="noopener" data-i18n="admin.viewSite"></a>
+          <button id="logout" class="btn small" type="button" data-i18n="admin.logout"></button>
+        </div>
+      </header>
+
+      <main class="container admin-main">
+        <!-- #/ : every form -->
+        <section id="view-list" class="stack" hidden>
+          <div class="row spread">
+            <h1 class="page-title" data-i18n="forms.title"></h1>
+            <a class="btn primary" href="#/new" data-i18n="forms.new"></a>
+          </div>
+          <div id="list-wrap" class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="col.title"></th>
+                  <th class="num" data-i18n="col.responses"></th>
+                  <th data-i18n="col.status"></th>
+                  <th data-i18n="col.link"></th>
+                  <th data-i18n="col.created"></th>
+                  <th><span class="sr-only" data-i18n="col.actions"></span></th>
+                </tr>
+              </thead>
+              <tbody id="form-rows"></tbody>
+            </table>
+          </div>
+          <p id="list-empty" class="empty card" hidden data-i18n="forms.empty"></p>
+        </section>
+
+        <!-- #/new, #/forms/<id>/edit and #/forms/<id>/results : one form -->
+        <section id="view-form" class="stack" hidden>
+          <a class="back" href="#/" data-i18n="forms.back"></a>
+          <div class="form-header">
+            <div class="grow">
+              <h1 id="form-name" class="page-title"></h1>
+              <p id="form-meta" class="row small muted"></p>
+            </div>
+            <nav class="tabs" role="tablist" id="form-tabs">
+              <button type="button" role="tab" id="tab-questions" aria-controls="panel-questions" aria-selected="true" data-i18n="tab.questions"></button>
+              <button type="button" role="tab" id="tab-results" aria-controls="panel-results" aria-selected="false" data-i18n="tab.results"></button>
+            </nav>
+          </div>
+
+          <section id="panel-questions" role="tabpanel" aria-labelledby="tab-questions">
+            <form id="builder" class="builder stack" novalidate>
+              <div class="card stack">
+                <label class="field">
+                  <span data-i18n="builder.title"></span>
+                  <input name="title" maxlength="120" required data-i18n-placeholder="builder.titlePlaceholder" />
+                </label>
+                <label class="field">
+                  <span data-i18n="builder.description"></span>
+                  <textarea name="description" maxlength="1000" rows="3"></textarea>
+                </label>
+                <label class="check switch">
+                  <input type="checkbox" name="is_open" />
+                  <span><strong data-i18n="builder.isOpen"></strong> <span class="muted small" data-i18n="builder.isOpenHint"></span></span>
+                </label>
+              </div>
+
+              <p id="has-responses" class="alert" hidden></p>
+
+              <h2 data-i18n="builder.questions"></h2>
+              <ol id="questions" class="q-list"></ol>
+              <p id="no-questions" class="empty card" hidden data-i18n="builder.noQuestions"></p>
+
+              <div class="card add-bar">
+                <span class="add-title" data-i18n="builder.add"></span>
+                <div class="row">
+                  <button class="btn small" type="button" data-add="text" data-i18n="type.text"></button>
+                  <button class="btn small" type="button" data-add="email" data-i18n="type.email"></button>
+                  <button class="btn small" type="button" data-add="choice" data-i18n="type.choice"></button>
+                  <button class="btn small" type="button" data-add="rating" data-i18n="type.rating"></button>
+                </div>
+              </div>
+
+              <div class="save-bar">
+                <button id="delete-form" class="btn danger" type="button" data-i18n="builder.delete"></button>
+                <span id="dirty" class="muted small grow" aria-live="polite"></span>
+                <button class="btn primary" type="submit" data-i18n="common.save"></button>
+              </div>
+            </form>
+          </section>
+
+          <section id="panel-results" role="tabpanel" aria-labelledby="tab-results" class="stack" hidden>
+            <div class="stats">
+              <div class="stat"><span class="muted small" data-i18n="results.total"></span><strong id="stat-total">–</strong></div>
+              <div class="stat"><span class="muted small" data-i18n="results.last"></span><strong id="stat-last" class="stat-text">–</strong></div>
+              <div class="stat"><span class="muted small" data-i18n="col.status"></span><strong id="stat-status" class="stat-text">–</strong></div>
+            </div>
+            <div class="toolbar">
+              <a id="export" class="btn" href="#" download data-i18n="results.export"></a>
+            </div>
+            <div id="summary" class="summary"></div>
+
+            <h2 data-i18n="results.responses"></h2>
+            <p id="responses-empty" class="empty card" hidden data-i18n="results.empty"></p>
+            <ol id="responses" class="responses"></ol>
+            <div class="pager" id="responses-pager">
+              <button id="prev" class="btn small" type="button" data-i18n="common.previous"></button>
+              <span id="page-info" class="muted small"></span>
+              <button id="next" class="btn small" type="button" data-i18n="common.next"></button>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
